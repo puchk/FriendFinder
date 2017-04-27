@@ -2,12 +2,9 @@
 <html>
 <head>
   <title>Survey</title>
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="container">
@@ -25,7 +22,7 @@
     <br>
   </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script> -->
 <script type="text/javascript">
   var questionList = [
     "animals",
@@ -39,9 +36,26 @@
     "cars",
     "staying out late"
   ];
-  for (var i=1; i<questionList.length+1; i++){
+  // Display Questions On HTML
+  for (var i=1; i<questionList.length+1; i++) {
     $("#questions").append("<h3>Question "+i+"</h3><label>You like "+questionList[i-1]+".</label><select class='form-control' id='question"+i+"'><option></option><option>1 (Strongly Disagree)</option><option>2</option><option>3</option><option>4</option><option>5 (Strongly Agree)</option></select>");
+  };
+
+  function runFriendsQuery() {
+    var currentURL = window.location.origin;
+    console.log(currentURL);
+
+    $.ajax({ url: currentURL + "/api/friends", method: "GET" })
+    .done(function(friendsData) {
+      console.log("-------------------------");
+      console.log("URL: "+currentURL+"/api/friends");
+      console.log("-------------------------");
+      console.log(friendsData);
+      console.log("-------------------------");
+
+    })
   }
+  runFriendsQuery();
 </script>
 </body>
 </html>
