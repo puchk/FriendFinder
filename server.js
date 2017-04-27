@@ -1,10 +1,10 @@
 // Dependencies
-var express = require("express");
-var bodyParser = require("body-parser");
+var express = require('express');
+var bodyParser = require('body-parser');
+var path = require('path');
 
 // Express Instance
 var app = express();
-
 // Sets an initial port to use later in our listener
 var PORT = process.env.PORT || 8080;
 
@@ -14,9 +14,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
-// // Router
+
+// Router
 // require("./app/routing/apiRoutes")(app);
-// require("./app/routing/htmlRoutes")(app);
+require("./app/routing/htmlRoutes")(app);
 
 // Listener
 app.listen(PORT, function() {
