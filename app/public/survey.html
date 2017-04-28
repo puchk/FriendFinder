@@ -12,9 +12,9 @@
     <hr>
     <h3><strong>About You</strong></h3>
     <h4>Name</h4>
-    <input type="text" id="personName" class="form-control" required>
+    <input type="text" id="friendName" class="form-control" required>
     <h4>Link to Photo</h4>
-    <input type="text" id="personPhoto" class="form-control" required>
+    <input type="text" id="friendPhoto" class="form-control" required>
     <hr>
     <div class="form-group" id="questions"></div>
     <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitButton">Submit</button>
@@ -37,9 +37,40 @@
     "staying out late"
   ];
   // Display Questions On HTML
-  for (var i=1; i<questionList.length+1; i++) {
+  for (var i=1; i<=questionList.length; i++) {
     $("#questions").append("<h3>Question "+i+"</h3><label>You like "+questionList[i-1]+".</label><select class='form-control' id='question"+i+"'><option></option><option>1 (Strongly Disagree)</option><option>2</option><option>3</option><option>4</option><option>5 (Strongly Agree)</option></select>");
   };
+
+
+ $("#submitButton").on("click", function(event) {
+  event.preventDefault();
+
+  // Create an array of answers
+  var answerArray = [];
+  for (var i=1; i<=questionList.length; i++) {
+    answerArray.push($("#question"+i).val().trim().charAt(0));
+  }
+  var friendName = $("#friendName").val().trim();
+  var friendPhoto = $("#friendPhoto").val().trim();
+
+  console.log(answerArray);
+
+  var newFriend = {
+    "name": friendName,
+    "photo": friendPhoto,
+    "scores": answerArray
+  }
+});
+
+
+
+
+
+
+
+
+
+
 
   function runFriendsQuery() {
     var currentURL = window.location.origin;
