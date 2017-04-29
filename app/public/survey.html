@@ -18,6 +18,22 @@
     <hr>
     <!-- <div class="form-group" id="questions"></div> -->
     <form id="questions"></form>
+    <div id="alertModal" class="modal fade">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Your match is <span id="matchName"></span>!</h4>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-default" data-dismiss="modal">
+                      Close</button>
+              </div>
+          </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <!-- <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitButton">Submit</button> -->
     <br>
     <br>
@@ -57,7 +73,6 @@ $("#submitButton").on("click", function(event) {
   var friendName = $("#friendName").val().trim();
   var friendPhoto = $("#friendPhoto").val().trim();
 
-
   // Create new object
   var newFriend = {
     "name": friendName,
@@ -66,12 +81,6 @@ $("#submitButton").on("click", function(event) {
   }
   console.log("newFriend: "+newFriend.scores);
 
-
-
-
-
-
-
   var currentURL = window.location.origin;
   $.post(currentURL + "/api/friends", newFriend, function() {
   })
@@ -79,40 +88,44 @@ $("#submitButton").on("click", function(event) {
 });
 
 
-  function runFriendsQuery() {
-    var currentURL = window.location.origin;
+function runFriendsQuery() {
+  var currentURL = window.location.origin;
 
-    $.ajax({ url: currentURL + "/api/friends", method: "GET" })
-    .done(function(friendsData) {
-      console.log(friendsData);
+  $.ajax({ url: currentURL + "/api/friends", method: "GET" })
+  .done(function(friendsData) {
+    console.log(friendsData);
 
-      // Random high number
-      var smallestDiff = 100;
-      var smallestName = "";
-      var smallestPhoto = "";
+    // Random high number
+    var smallestDiff = 100;
+    var smallestName = "";
+    var smallestPhoto = "";
 
-      for (var i=0; i<friendsData.length-1; i++) {
-        var totalDiff = 0;
-        for (var j=0; j<friendsData[i].scores.length; j++) {
-          // console.log("Score"+j+": "+friendsData[i].scores[j]);
-          totalDiff += Math.abs((friendsData[friendsData.length-1].scores[j] - friendsData[i].scores[j]));
-        }
-        console.log("NAME: "+friendsData[i].name);
-        console.log("PHOTO: "+friendsData[i].photo);
-        console.log("DIFFERENCE: "+totalDiff);
-
-        if (totalDiff < smallestDiff) {
-          smallestName = friendsData[i].name;
-          smallestPhoto = friendsData[i].photo;
-          smallestDiff = totalDiff;
-        }
-
+    for (var i=0; i<friendsData.length-1; i++) {
+      var totalDiff = 0;
+      for (var j=0; j<friendsData[i].scores.length; j++) {
+        // console.log("Score"+j+": "+friendsData[i].scores[j]);
+        totalDiff += Math.abs((friendsData[friendsData.length-1].scores[j] - friendsData[i].scores[j]));
       }
-      console.log("-------------------------");
-      alert("Your best match is "+smallestName+" Photo: "+smallestPhoto+ "Score Diff: "+smallestDiff);
-    })
-  }
-  runFriendsQuery();
+      console.log("NAME: "+friendsData[i].name);
+      console.log("PHOTO: "+friendsData[i].photo);
+      console.log("DIFFERENCE: "+totalDiff);
+
+      if (totalDiff < smallestDiff) {
+        smallestName = friendsData[i].name;
+        smallestPhoto = friendsData[i].photo;
+        smallestDiff = totalDiff;
+      }
+      $("#matchName").html(smallestName);
+      $(".modal-body").html("<img src='"+smallestPhoto+"'><p>You had a difference of "+smallestDiff+".</p>");
+
+    }
+    console.log("-------------------------");
+    // HAVING TROUBLE WITH MODALS
+    // alert("Your best match is "+smallestName+" Photo: "+smallestPhoto+ "Score Diff: "+smallestDiff);
+    // $('#alertModal').find('.modal-body p').text(message);
+    $('#alertModal').modal('show')
+  });
+}
 </script>
 </body>
 </html>
