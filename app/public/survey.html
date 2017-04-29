@@ -86,11 +86,12 @@ $("#submitButton").on("click", function(event) {
     .done(function(friendsData) {
       console.log(friendsData);
 
-
-
+      // Random high number
+      var smallestDiff = 100;
+      var smallestName = "";
+      var smallestPhoto = "";
 
       for (var i=0; i<friendsData.length-1; i++) {
-
         var totalDiff = 0;
         for (var j=0; j<friendsData[i].scores.length; j++) {
           // console.log("Score"+j+": "+friendsData[i].scores[j]);
@@ -99,9 +100,16 @@ $("#submitButton").on("click", function(event) {
         console.log("NAME: "+friendsData[i].name);
         console.log("PHOTO: "+friendsData[i].photo);
         console.log("DIFFERENCE: "+totalDiff);
+
+        if (totalDiff < smallestDiff) {
+          smallestName = friendsData[i].name;
+          smallestPhoto = friendsData[i].photo;
+          smallestDiff = totalDiff;
+        }
+
       }
       console.log("-------------------------");
-
+      alert("Your best match is "+smallestName+" Photo: "+smallestPhoto+ "Score Diff: "+smallestDiff);
     })
   }
   runFriendsQuery();
