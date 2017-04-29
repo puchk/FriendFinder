@@ -51,7 +51,8 @@ $("#submitButton").on("click", function(event) {
   // Create an array of answers
   var answerArray = [];
   for (var i=1; i<=questionList.length; i++) {
-    answerArray.push($("#question"+i).val().trim().charAt(0));
+    var convertAnswer = parseInt($("#question"+i).val().trim().charAt(0));
+    answerArray.push(convertAnswer);
   }
   var friendName = $("#friendName").val().trim();
   var friendPhoto = $("#friendPhoto").val().trim();
@@ -64,7 +65,6 @@ $("#submitButton").on("click", function(event) {
     "scores": answerArray
   }
   console.log("newFriend: "+newFriend.scores);
-  console.log("newFriend: "+newFriend.scores[0]);
 
 
 
@@ -84,14 +84,24 @@ $("#submitButton").on("click", function(event) {
 
     $.ajax({ url: currentURL + "/api/friends", method: "GET" })
     .done(function(friendsData) {
-      console.log("-------------------------");
-      console.log("URL: "+currentURL+"/api/friends");
       console.log(friendsData);
+
+
+
+
+      for (var i=0; i<friendsData.length-1; i++) {
+
+        var totalDiff = 0;
+        for (var j=0; j<friendsData[i].scores.length; j++) {
+          // console.log("Score"+j+": "+friendsData[i].scores[j]);
+          totalDiff += Math.abs((friendsData[friendsData.length-1].scores[j] - friendsData[i].scores[j]));
+        }
+        console.log("NAME: "+friendsData[i].name);
+        console.log("PHOTO: "+friendsData[i].photo);
+        console.log("DIFFERENCE: "+totalDiff);
+      }
       console.log("-------------------------");
 
-      for (var i=0; i<friendsData.length; i++) {
-        console.log(friendsData[i]);
-      }
     })
   }
   runFriendsQuery();
